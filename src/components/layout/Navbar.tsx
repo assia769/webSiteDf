@@ -10,7 +10,7 @@ const LINKS = [
   { href: '/team',      label: 'Team' },
   { href: '/contact',   label: 'Contact' },
   { href: '/download',  label: 'Download' },
-  { href: '/sound',     label: 'Haunit' },
+  { href: '/sound',     label: 'Igri' },
   { href: '/guide',     label: 'Guide' },
 ];
 
