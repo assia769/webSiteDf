@@ -48,7 +48,7 @@ export function Navbar() {
         }}
       >
         <Image
-          src="/assets/robot/logo1.png"
+          src="/assets/robot/logo.png"
           alt="DFCraft Logo"
           width={36}
           height={36}

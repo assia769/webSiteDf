@@ -80,7 +80,7 @@ export function FloatingRobot() {
 
       {/* AI Character image */}
       <Image
-        src="/assets/robot/aii.png"
+        src="/assets/robot/ai.png"
         alt="DFCraft AI Mascot"
         width={480}
         height={520}
