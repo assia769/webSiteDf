@@ -138,7 +138,6 @@ function TeamCard({ member, index }: { member: typeof TEAM[0]; index: number }) 
         perspective: '1200px',
         animationDelay: `${index * 0.2}s`,
         animation: 'cardEntry 0.8s cubic-bezier(0.16,1,0.3,1) both',
-        animationDelay: `${index * 0.18}s`,
       }}
     >
       <div
