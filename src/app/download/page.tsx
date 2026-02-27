@@ -1,123 +1,425 @@
 'use client';
-
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { GlowCard } from '@/components/ui/GlowCard';
 
 const BROWSERS = [
   {
-    emoji: '🟢',
     name: 'Chrome',
-    sub: 'Chrome Web Store · v1.0.0',
+    sub: 'Chrome Web Store',
+    version: 'v1.0.0',
+    logo: '/assets/download/chrome.png',
     url: '#',
-    color: '#4ade80',
+    accent: '#4285F4',
+    accentAlt: '#34A853',
+    users: '2M+',
+    rating: '4.9',
   },
   {
-    emoji: '🦊',
     name: 'Firefox',
-    sub: 'Firefox Add-ons · v1.0.0',
+    logo: '/assets/download/firefox.png',
+    sub: 'Firefox Add-ons',
+    version: 'v1.0.0',
     url: '#',
-    color: '#fb923c',
+    accent: '#FF7139',
+    accentAlt: '#FF980E',
+    users: '800K+',
+    rating: '4.8',
   },
 ];
 
 const FEATURES = [
-  '🔒 No ads or data collection',
-  '⚡ Ultra lightweight — <200KB',
-  '🆓 100% free forever',
-  '🔓 Open source',
-  '🔄 Auto-updates',
-  '🌐 Works on all websites',
+  { icon: '🔒', label: 'No ads or data collection' },
+  { icon: '⚡', label: 'Ultra lightweight — <200KB' },
+  { icon: '🆓', label: '100% free forever' },
+  { icon: '🔓', label: 'Open source' },
+  { icon: '🔄', label: 'Auto-updates' },
+  { icon: '🌐', label: 'Works on all websites' },
 ];
 
 export default function DownloadPage() {
   const [clicked, setClicked] = useState<string | null>(null);
+  const [hovered, setHovered] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
+  const particlesRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
-    <div className="page-wrapper" style={{ textAlign: 'center' }}>
-      <span className="label-tag">Get the Extension</span>
-      <h1 className="page-heading">
-        Download{' '}
-        <span className="gradient-text">DFCraft</span>
-      </h1>
-      <p className="page-sub" style={{ margin: '0 auto 3rem', maxWidth: 440 }}>
-        Free forever. No account required. Available for Chrome and Firefox.
-      </p>
+    <div style={{ position: 'relative', textAlign: 'center', padding: '4rem 1.5rem 6rem', overflow: 'hidden', minHeight: '100vh' }}>
 
-      {/* Download cards */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '1.5rem',
-          maxWidth: 580,
-          margin: '0 auto 3rem',
-        }}
-      >
-        {BROWSERS.map(b => (
-          <GlowCard
-            key={b.name}
-            style={{ padding: '2.2rem 1.75rem', textAlign: 'center', cursor: 'none' }}
-            onClick={() => setClicked(b.name)}
-          >
-            <div style={{ fontSize: '3.2rem', marginBottom: '.9rem', display: 'block' }}>{b.emoji}</div>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: 700, marginBottom: '.4rem', color: '#fff' }}>
-              {b.name}
-            </div>
-            <p style={{ fontSize: '.8rem', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>{b.sub}</p>
-
-            <a
-              href={b.url}
-              onClick={e => { e.preventDefault(); setClicked(b.name); }}
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: 8,
-                padding: '10px 24px', borderRadius: 50,
-                background: 'linear-gradient(135deg, #7c3aed, #a855f7)',
-                color: '#fff', textDecoration: 'none',
-                fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '.88rem',
-                boxShadow: clicked === b.name ? '0 0 30px rgba(168,85,247,.6)' : '0 0 16px rgba(168,85,247,.3)',
-                transition: 'all .3s',
-                transform: clicked === b.name ? 'scale(1.06)' : 'scale(1)',
-              }}
-            >
-              {clicked === b.name ? '⏳ Coming Soon...' : `Download for ${b.name}`}
-            </a>
-          </GlowCard>
-        ))}
+      {/* Ambient orbs */}
+      <div style={{
+        position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0,
+        overflow: 'hidden',
+      }}>
+        <div style={{
+          position: 'absolute', top: '-10%', left: '15%',
+          width: 600, height: 600,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 70%)',
+          animation: 'driftA 14s ease-in-out infinite',
+        }} />
+        <div style={{
+          position: 'absolute', bottom: '5%', right: '10%',
+          width: 500, height: 500,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(168,85,247,0.14) 0%, transparent 70%)',
+          animation: 'driftB 18s ease-in-out infinite',
+        }} />
+        <div style={{
+          position: 'absolute', top: '40%', left: '-5%',
+          width: 400, height: 400,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%)',
+          animation: 'driftC 22s ease-in-out infinite',
+        }} />
       </div>
 
-      {/* Feature badges */}
-      <div
-        style={{
+      {/* Grid overlay */}
+      <div style={{
+        position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0,
+        backgroundImage: `
+          linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)
+        `,
+        backgroundSize: '60px 60px',
+        maskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent)',
+      }} />
+
+      <div style={{ position: 'relative', zIndex: 1 }}>
+
+        {/* Badge */}
+        <div style={{
+          display: 'inline-flex', alignItems: 'center', gap: 8,
+          padding: '6px 18px', borderRadius: 50,
+          border: '1px solid rgba(139,92,246,0.4)',
+          background: 'rgba(139,92,246,0.08)',
+          backdropFilter: 'blur(12px)',
+          marginBottom: '1.5rem',
+          fontSize: '.78rem', fontWeight: 600,
+          color: '#a78bfa',
+          letterSpacing: '0.08em', textTransform: 'uppercase',
+          animation: mounted ? 'fadeUp .6s ease forwards' : 'none',
+          opacity: 0,
+          animationDelay: '0.1s',
+          fontFamily: 'var(--font-display)',
+        }}>
+          <span style={{
+            width: 6, height: 6, borderRadius: '50%',
+            background: '#a78bfa',
+            boxShadow: '0 0 8px #a78bfa',
+            animation: 'pulse 2s infinite',
+            display: 'inline-block',
+          }} />
+          Get the Extension
+        </div>
+
+        {/* Heading */}
+        <h1 style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 'clamp(2.8rem, 7vw, 5rem)',
+          fontWeight: 900,
+          lineHeight: 1.05,
+          marginBottom: '1.2rem',
+          letterSpacing: '-0.03em',
+          animation: mounted ? 'fadeUp .6s ease forwards' : 'none',
+          opacity: 0,
+          animationDelay: '0.2s',
+        }}>
+          Download{' '}
+          <span style={{
+            background: 'linear-gradient(135deg, #818cf8, #a78bfa, #e879f9)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            filter: 'drop-shadow(0 0 30px rgba(167,139,250,0.4))',
+          }}>
+            DFCraft
+          </span>
+        </h1>
+
+        {/* Sub */}
+        <p style={{
+          fontSize: '1.05rem',
+          color: 'var(--text-muted)',
+          margin: '0 auto 3.5rem',
+          maxWidth: 420,
+          lineHeight: 1.65,
+          animation: mounted ? 'fadeUp .6s ease forwards' : 'none',
+          opacity: 0,
+          animationDelay: '0.3s',
+        }}>
+          Free forever. No account required.<br />Available for Chrome and Firefox.
+        </p>
+
+        {/* Browser cards */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+          gap: '1.5rem',
+          maxWidth: 620,
+          margin: '0 auto 4rem',
+          animation: mounted ? 'fadeUp .6s ease forwards' : 'none',
+          opacity: 0,
+          animationDelay: '0.4s',
+        }}>
+          {BROWSERS.map((b, i) => (
+            <div
+              key={b.name}
+              onMouseEnter={() => setHovered(b.name)}
+              onMouseLeave={() => setHovered(null)}
+              style={{
+                position: 'relative',
+                borderRadius: 24,
+                padding: '2px',
+                background: hovered === b.name
+                  ? `linear-gradient(135deg, ${b.accent}, ${b.accentAlt})`
+                  : 'linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03))',
+                transition: 'all .4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                transform: hovered === b.name ? 'translateY(-6px) scale(1.02)' : 'translateY(0) scale(1)',
+                boxShadow: hovered === b.name
+                  ? `0 20px 60px rgba(0,0,0,0.4), 0 0 40px ${b.accent}33`
+                  : '0 4px 24px rgba(0,0,0,0.2)',
+              }}
+            >
+              {/* Shine effect */}
+              <div style={{
+                position: 'absolute', inset: 0, borderRadius: 24, pointerEvents: 'none', zIndex: 2,
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 50%)',
+              }} />
+
+              <div style={{
+                position: 'relative',
+                borderRadius: 22,
+                padding: '2.2rem 1.75rem',
+                background: 'rgba(12,12,18,0.92)',
+                backdropFilter: 'blur(24px)',
+                textAlign: 'center',
+                overflow: 'hidden',
+              }}>
+                {/* Background glow inside card */}
+                <div style={{
+                  position: 'absolute', top: -40, left: '50%', transform: 'translateX(-50%)',
+                  width: 200, height: 200, borderRadius: '50%',
+                  background: `radial-gradient(circle, ${b.accent}22, transparent 70%)`,
+                  transition: 'opacity .4s',
+                  opacity: hovered === b.name ? 1 : 0.4,
+                }} />
+
+                {/* Logo */}
+                <div style={{
+                  width: 72, height: 72,
+                  margin: '0 auto 1.2rem',
+                  position: 'relative',
+                  transition: 'transform .4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                  transform: hovered === b.name ? 'scale(1.15) rotate(-3deg)' : 'scale(1)',
+                }}>
+                  <div style={{
+                    position: 'absolute', inset: -4, borderRadius: '50%',
+                    background: `conic-gradient(${b.accent}, ${b.accentAlt}, ${b.accent})`,
+                    opacity: hovered === b.name ? 0.6 : 0,
+                    transition: 'opacity .4s',
+                    animation: hovered === b.name ? 'spin 3s linear infinite' : 'none',
+                    filter: 'blur(2px)',
+                  }} />
+                  <img
+                    src={b.logo}
+                    alt={b.name}
+                    style={{
+                      width: '100%', height: '100%',
+                      objectFit: 'contain',
+                      borderRadius: '50%',
+                      position: 'relative', zIndex: 1,
+                      filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.3))',
+                    }}
+                  />
+                </div>
+
+                {/* Name */}
+                <div style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '1.4rem',
+                  fontWeight: 800,
+                  color: '#fff',
+                  marginBottom: '.3rem',
+                  letterSpacing: '-0.02em',
+                }}>
+                  {b.name}
+                </div>
+
+                {/* Store info */}
+                <p style={{
+                  fontSize: '.78rem',
+                  color: 'var(--text-muted)',
+                  marginBottom: '.8rem',
+                }}>
+                  {b.sub} · {b.version}
+                </p>
+
+                {/* Stats row */}
+                <div style={{
+                  display: 'flex', justifyContent: 'center', gap: '1.2rem',
+                  marginBottom: '1.5rem',
+                }}>
+                  <div style={{ textAlign: 'center' }}>
+                    <div style={{ fontSize: '.85rem', fontWeight: 700, color: '#fff', fontFamily: 'var(--font-display)' }}>{b.users}</div>
+                    <div style={{ fontSize: '.68rem', color: 'var(--text-muted)' }}>users</div>
+                  </div>
+                  <div style={{ width: 1, background: 'rgba(255,255,255,0.1)' }} />
+                  <div style={{ textAlign: 'center' }}>
+                    <div style={{ fontSize: '.85rem', fontWeight: 700, color: '#fbbf24', fontFamily: 'var(--font-display)' }}>★ {b.rating}</div>
+                    <div style={{ fontSize: '.68rem', color: 'var(--text-muted)' }}>rating</div>
+                  </div>
+                </div>
+
+                {/* CTA button */}
+                <a
+                  href={b.url}
+                  onClick={e => { e.preventDefault(); setClicked(b.name); }}
+                  style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 8,
+                    padding: '12px 28px', borderRadius: 50,
+                    background: clicked === b.name
+                      ? 'rgba(255,255,255,0.08)'
+                      : `linear-gradient(135deg, ${b.accent}, ${b.accentAlt})`,
+                    color: '#fff', textDecoration: 'none',
+                    fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '.88rem',
+                    letterSpacing: '-0.01em',
+                    border: clicked === b.name ? `1px solid ${b.accent}44` : 'none',
+                    boxShadow: clicked === b.name
+                      ? 'none'
+                      : `0 4px 20px ${b.accent}55`,
+                    transition: 'all .3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                    transform: hovered === b.name && clicked !== b.name ? 'scale(1.05)' : 'scale(1)',
+                    cursor: 'pointer',
+                    width: '100%',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {clicked === b.name ? (
+                    <>
+                      <span style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }}>⏳</span>
+                      Coming Soon...
+                    </>
+                  ) : (
+                    <>
+                      <span>⬇</span>
+                      Add to {b.name}
+                    </>
+                  )}
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Divider */}
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: '1rem',
+          maxWidth: 480, margin: '0 auto 2.5rem',
+          animation: mounted ? 'fadeUp .6s ease forwards' : 'none',
+          opacity: 0,
+          animationDelay: '0.55s',
+        }}>
+          <div style={{ flex: 1, height: 1, background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.1))' }} />
+          <span style={{ fontSize: '.75rem', color: 'var(--text-muted)', letterSpacing: '0.08em', textTransform: 'uppercase', fontFamily: 'var(--font-display)' }}>
+            Why DFCraft?
+          </span>
+          <div style={{ flex: 1, height: 1, background: 'linear-gradient(270deg, transparent, rgba(255,255,255,0.1))' }} />
+        </div>
+
+        {/* Feature pills */}
+        <div style={{
           display: 'flex',
           flexWrap: 'wrap',
-          gap: '.65rem',
+          gap: '.6rem',
           justifyContent: 'center',
-          maxWidth: 600,
+          maxWidth: 580,
           margin: '0 auto',
-        }}
-      >
-        {FEATURES.map(f => (
-          <span
-            key={f}
-            style={{
-              background: 'var(--glass)',
-              border: '1px solid var(--glass-b)',
-              borderRadius: 50,
-              padding: '6px 16px',
-              fontSize: '.78rem',
-              color: 'var(--text-muted)',
-              fontFamily: 'var(--font-display)',
-              backdropFilter: 'blur(10px)',
-            }}
-          >
-            {f}
-          </span>
-        ))}
+          animation: mounted ? 'fadeUp .6s ease forwards' : 'none',
+          opacity: 0,
+          animationDelay: '0.6s',
+        }}>
+          {FEATURES.map((f, i) => (
+            <div
+              key={f.label}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 8,
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                borderRadius: 50,
+                padding: '8px 18px',
+                fontSize: '.8rem',
+                color: 'rgba(255,255,255,0.7)',
+                fontFamily: 'var(--font-display)',
+                backdropFilter: 'blur(12px)',
+                transition: 'all .3s',
+                cursor: 'default',
+                animationDelay: `${0.6 + i * 0.06}s`,
+              }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLElement).style.background = 'rgba(139,92,246,0.15)';
+                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(139,92,246,0.4)';
+                (e.currentTarget as HTMLElement).style.color = '#fff';
+                (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.04)';
+                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)';
+                (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.7)';
+                (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
+              }}
+            >
+              <span>{f.icon}</span>
+              {f.label}
+            </div>
+          ))}
+        </div>
+
+        {/* Bottom note */}
+        <p style={{
+          marginTop: '3rem',
+          fontSize: '.75rem',
+          color: 'rgba(255,255,255,0.3)',
+          fontFamily: 'var(--font-display)',
+          animation: mounted ? 'fadeUp .6s ease forwards' : 'none',
+          opacity: 0,
+          animationDelay: '0.8s',
+        }}>
+          No signup. No credit card. Works instantly after install.
+        </p>
+
       </div>
 
       <style>{`
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+          0%, 100% { opacity: 1; box-shadow: 0 0 8px #a78bfa; }
+          50%       { opacity: .5; box-shadow: 0 0 4px #a78bfa; }
+        }
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to   { transform: rotate(360deg); }
+        }
+        @keyframes driftA {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          50%       { transform: translate(40px, 30px) scale(1.05); }
+        }
+        @keyframes driftB {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          50%       { transform: translate(-50px, -40px) scale(1.08); }
+        }
+        @keyframes driftC {
+          0%, 100% { transform: translate(0, 0); }
+          50%       { transform: translate(30px, -60px); }
+        }
         @media (max-width: 480px) {
-          div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+          div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </div>
