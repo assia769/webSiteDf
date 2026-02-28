@@ -5,12 +5,11 @@ import { CTA } from '@/components/sections/CTA';
 export default function HomePage() {
   return (
     <>
-      {/* ── Persistent background layers (fixed, behind everything) ── */}
+      {/* Fixed background layers defined in globals.css */}
       <div className="bg-glow"    aria-hidden="true" />
       <div className="bg-horizon" aria-hidden="true" />
       <div className="bg-grid"    aria-hidden="true" />
 
-      {/* ── Page sections ── */}
       <Hero />
       <Features />
       <CTA />
