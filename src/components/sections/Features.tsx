@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { GlowCard } from '@/components/ui/GlowCard';
 
 function useReveal(delay = 0) {
@@ -17,9 +17,27 @@ function useReveal(delay = 0) {
   return ref;
 }
 
-/* ── Pomo Ring ── */
+/* ── Pomo Ring ── 
+   FIX: Math.cos/sin produce floating point differences between server and client.
+   Solution: render only on client with useState/useEffect to avoid hydration mismatch.
+*/
 function PomoRing() {
   const C = 314; // 2πr, r=50
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Placeholder with same dimensions shown during SSR / before mount
+  if (!mounted) {
+    return (
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'center', padding:'1rem 0 .5rem', position:'relative' }}>
+        <div style={{ width:102, height:102, borderRadius:'50%', background:'rgba(168,85,247,.05)', border:'1px solid rgba(168,85,247,.1)' }} />
+      </div>
+    );
+  }
+
   return (
     <div style={{ display:'flex', alignItems:'center', justifyContent:'center', padding:'1rem 0 .5rem', position:'relative' }}>
       <svg viewBox="0 0 110 110" style={{ width:102, height:102, transform:'rotate(-90deg)', overflow:'visible' }}>
@@ -36,14 +54,33 @@ function PomoRing() {
         </defs>
         {/* Track */}
         <circle fill="none" stroke="rgba(168,85,247,.1)" strokeWidth={6} cx={55} cy={55} r={50}/>
-        {/* Tick marks */}
+        {/* Tick marks — computed client-side only, no hydration mismatch */}
         {Array.from({length:12}).map((_,i) => {
           const a = (i*30-90)*Math.PI/180;
-          return <line key={i} x1={55+46*Math.cos(a)} y1={55+46*Math.sin(a)} x2={55+43*Math.cos(a)} y2={55+43*Math.sin(a)} stroke="rgba(168,85,247,.22)" strokeWidth={1.5} strokeLinecap="round"/>;
+          const x1 = 55+46*Math.cos(a);
+          const y1 = 55+46*Math.sin(a);
+          const x2 = 55+43*Math.cos(a);
+          const y2 = 55+43*Math.sin(a);
+          return (
+            <line
+              key={i}
+              x1={x1} y1={y1}
+              x2={x2} y2={y2}
+              stroke="rgba(168,85,247,.22)"
+              strokeWidth={1.5}
+              strokeLinecap="round"
+            />
+          );
         })}
         {/* Arc */}
-        <circle fill="none" stroke="url(#fpg)" strokeWidth={6} strokeLinecap="round"
-          cx={55} cy={55} r={50} strokeDasharray={C} strokeDashoffset={C*.25}
+        <circle
+          fill="none"
+          stroke="url(#fpg)"
+          strokeWidth={6}
+          strokeLinecap="round"
+          cx={55} cy={55} r={50}
+          strokeDasharray={C}
+          strokeDashoffset={C*.25}
           filter="url(#fglow)"
           style={{ animation:'pomoPulse 3s ease-in-out infinite' }}
         />
@@ -51,7 +88,8 @@ function PomoRing() {
         <circle
           cx={55 + 50*Math.cos((-90 + (C-C*.25)/C*360)*Math.PI/180)}
           cy={55 + 50*Math.sin((-90 + (C-C*.25)/C*360)*Math.PI/180)}
-          r={4.5} fill="#e879f9"
+          r={4.5}
+          fill="#e879f9"
           style={{ filter:'drop-shadow(0 0 7px #e879f9)' }}
         />
       </svg>
@@ -66,7 +104,7 @@ function PomoRing() {
 /* ── Todo Preview ── */
 function TodoPreview() {
   const items = [
-    { text:'Documentation',     done:true,  badge:null     },
+    { text:'Documentation',     done:true,  badge:null,     bc:''       },
     { text:'Build UI',          done:false, badge:'High',   bc:'high'   },
     { text:'Review Class',      done:false, badge:'Medium', bc:'medium' },
     { text:'Meeting with Aida', done:false, badge:'Low',    bc:'low'    },
