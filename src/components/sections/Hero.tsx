@@ -86,9 +86,150 @@ function FloatRing({ size, top, left, delay, speed }: {
   );
 }
 
+/* ── Mobile floating cards strip ── */
+function MobileStatsStrip() {
+  return (
+    <div style={{
+      display: 'flex', gap: '0.5rem', flexWrap: 'wrap',
+      marginTop: '2rem', marginBottom: '1rem',
+    }}>
+      {/* Focus Score */}
+      <div style={{
+        background: 'rgba(10,3,28,.9)',
+        border: '1px solid rgba(168,85,247,.3)',
+        borderRadius: 12, padding: '8px 12px',
+        backdropFilter: 'blur(18px)',
+        display: 'flex', alignItems: 'center', gap: 8,
+        flex: '1 1 auto', minWidth: 110,
+      }}>
+        <div>
+          <div style={{ fontSize: '.45rem', fontFamily: 'var(--font-display)', letterSpacing: '.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,.38)', marginBottom: 2 }}>Focus Score</div>
+          <div style={{
+            fontFamily: 'var(--font-display)', fontSize: '1.1rem', fontWeight: 800, lineHeight: 1,
+            background: 'linear-gradient(135deg,var(--purple-l),#e879f9)',
+            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+          }}>94%</div>
+        </div>
+        <div style={{ display: 'flex', gap: 2, alignItems: 'flex-end', height: 14, marginLeft: 'auto' }}>
+          {[65, 80, 55, 90, 70, 85, 94].map((h, i) => (
+            <div key={i} style={{ width: 3, borderRadius: 2, height: h * .14, background: `rgba(168,85,247,${.3 + h * .007})` }} />
+          ))}
+        </div>
+      </div>
+
+      {/* Timer */}
+      <div style={{
+        background: 'rgba(10,3,28,.9)',
+        border: '1px solid rgba(168,85,247,.32)',
+        borderRadius: 12, padding: '8px 12px',
+        backdropFilter: 'blur(14px)',
+        display: 'flex', alignItems: 'center', gap: 7,
+        flex: '0 0 auto',
+      }}>
+        <span style={{ fontSize: '.75rem' }}>⏱</span>
+        <span style={{ fontFamily: 'var(--font-display)', fontSize: '.75rem', fontWeight: 700, color: '#fff' }}>25:00</span>
+      </div>
+
+      {/* Blocked */}
+      <div style={{
+        background: 'rgba(10,3,28,.9)',
+        border: '1px solid rgba(236,72,153,.3)',
+        borderRadius: 12, padding: '8px 12px',
+        backdropFilter: 'blur(14px)',
+        display: 'flex', alignItems: 'center', gap: 7,
+        flex: '0 0 auto',
+      }}>
+        <span style={{ fontSize: '.68rem', color: 'rgba(236,72,153,.9)' }}>⊘</span>
+        <span style={{ fontFamily: 'var(--font-display)', fontSize: '.68rem', fontWeight: 700, color: 'rgba(255,255,255,.8)' }}>Blocked</span>
+      </div>
+
+      {/* Completed */}
+      <div style={{
+        background: 'rgba(10,3,28,.92)',
+        border: '1px solid rgba(34,197,94,.25)',
+        borderRadius: 12, padding: '8px 12px',
+        backdropFilter: 'blur(18px)',
+        display: 'flex', alignItems: 'center', gap: 8,
+        flex: '1 1 auto', minWidth: 130,
+      }}>
+        <div style={{
+          width: 22, height: 22, borderRadius: 7,
+          background: 'rgba(34,197,94,.2)', border: '1px solid rgba(34,197,94,.38)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: '.65rem', color: '#4ade80', flexShrink: 0,
+        }}>✓</div>
+        <div>
+          <div style={{ fontSize: '.42rem', fontFamily: 'var(--font-display)', letterSpacing: '.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,.35)', marginBottom: 1 }}>Completed</div>
+          <div style={{ fontFamily: 'var(--font-display)', fontSize: '.75rem', fontWeight: 800, color: '#fff' }}>12 Tasks</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Mobile Robot Preview (smaller, centered below text) ── */
+function MobileRobotSection() {
+  return (
+    <div style={{
+      position: 'relative',
+      width: '100%',
+      maxWidth: 340,
+      margin: '0 auto',
+      marginTop: '1.5rem',
+    }}>
+      {/* Glow behind robot */}
+      <div style={{
+        position: 'absolute', bottom: '10%', left: '50%', transform: 'translateX(-50%)',
+        width: '80%', height: 60,
+        background: 'radial-gradient(ellipse, rgba(180,80,255,.4) 0%, rgba(120,40,200,.15) 50%, transparent 70%)',
+        borderRadius: '50%', filter: 'blur(16px)',
+        zIndex: 1, pointerEvents: 'none',
+      }} />
+      <FloatingRobot />
+
+      {/* Mini browser card, shown below robot on mobile */}
+      <div style={{
+        marginTop: '1rem',
+        background: 'linear-gradient(150deg, rgba(22,10,52,.97), rgba(10,4,26,.99))',
+        border: '1px solid rgba(168,85,247,.28)',
+        borderRadius: 14,
+        overflow: 'hidden',
+        boxShadow: '0 12px 40px rgba(0,0,0,.5), 0 0 24px rgba(168,85,247,.1)',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '8px 10px 7px', borderBottom: '1px solid rgba(255,255,255,.06)' }}>
+          {['#ff5f57', '#febc2e', '#28c840'].map((c, i) => (
+            <div key={i} style={{ width: 6, height: 6, borderRadius: '50%', background: c, opacity: .8 }} />
+          ))}
+          <div style={{ flex: 1, height: 4, borderRadius: 3, background: 'rgba(255,255,255,.06)', marginLeft: 6 }} />
+        </div>
+        <div style={{ padding: '10px', display: 'flex', gap: 6 }}>
+          {[
+            { label: 'FOCUS', val: '94%', bg: 'rgba(168,85,247,.22)' },
+            { label: 'TASKS', val: '12',  bg: 'rgba(96,165,250,.15)' },
+            { label: 'STREAK', val: '7d', bg: 'rgba(236,72,153,.15)' },
+          ].map(s => (
+            <div key={s.label} style={{ flex: 1, borderRadius: 9, background: s.bg, border: '1px solid rgba(255,255,255,.07)', padding: '7px 8px' }}>
+              <div style={{ fontSize: '.4rem', color: 'rgba(255,255,255,.45)', fontFamily: 'var(--font-display)', letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: 2 }}>{s.label}</div>
+              <div style={{ fontSize: '.8rem', fontWeight: 800, fontFamily: 'var(--font-display)', color: '#fff' }}>{s.val}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
   const [phase, setPhase] = useState<'hidden' | 'enter' | 'active'>('hidden');
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   useEffect(() => {
     const t1 = setTimeout(() => setPhase('enter'),   80);
@@ -97,7 +238,7 @@ export function Hero() {
   }, []);
 
   useEffect(() => {
-    if (phase !== 'active') return;
+    if (phase !== 'active' || isMobile) return;
     let raf: number;
     let tx = 0, ty = 0;
     const onMove = (e: MouseEvent) => {
@@ -114,7 +255,7 @@ export function Hero() {
     window.addEventListener('mousemove', onMove);
     tick();
     return () => { window.removeEventListener('mousemove', onMove); cancelAnimationFrame(raf); };
-  }, [phase]);
+  }, [phase, isMobile]);
 
   const isIn = phase === 'enter' || phase === 'active';
 
@@ -122,9 +263,13 @@ export function Hero() {
     <section
       ref={heroRef}
       style={{
-        position: 'relative', minHeight: '100vh',
-        display: 'flex', alignItems: 'center',
-        padding: '0 5%', overflow: 'hidden',
+        position: 'relative',
+        minHeight: isMobile ? 'auto' : '100vh',
+        display: 'flex',
+        alignItems: isMobile ? 'flex-start' : 'center',
+        flexDirection: isMobile ? 'column' : 'row',
+        padding: isMobile ? '0 5% 3rem' : '0 5%',
+        overflow: 'hidden',
       }}
     >
       <style>{`
@@ -185,7 +330,6 @@ export function Hero() {
           50%  { transform:translateY(-28px) rotate(180deg); opacity:1; }
           100% { transform:translateY(0px) rotate(360deg); opacity:.65; }
         }
-        /* Individual float animations — each card has its own rhythm */
         @keyframes fc1 {
           0%,100% { transform:translateY(0px) rotate(0deg); }
           50%     { transform:translateY(-10px) rotate(.5deg); }
@@ -207,6 +351,26 @@ export function Hero() {
           0%,100% { transform:perspective(800px) rotateX(5deg) rotateY(-10deg) translateY(0px); }
           50%     { transform:perspective(800px) rotateX(7deg) rotateY(-8deg) translateY(-10px); }
         }
+        @keyframes robotLevitate {
+          0%,100% { --float-y:0px; }
+          50%     { --float-y:-18px; }
+        }
+        @keyframes sparkle {
+          0%,100% { transform:scale(1) rotate(0deg); opacity:.8; }
+          50%      { transform:scale(1.4) rotate(15deg); opacity:1; }
+        }
+        @keyframes orbitalSpin {
+          from { transform:rotateX(65deg) rotateZ(0deg); }
+          to   { transform:rotateX(65deg) rotateZ(360deg); }
+        }
+        @keyframes floorPulse {
+          0%,100% { opacity:.6; transform:translateX(-50%) scaleX(1); }
+          50%     { opacity:1; transform:translateX(-50%) scaleX(1.15); }
+        }
+        @keyframes gradientShift {
+          0%,100% { background-position:0% 50%; }
+          50%     { background-position:100% 50%; }
+        }
       `}</style>
 
       {/* ══ BACKGROUND ══ */}
@@ -217,8 +381,8 @@ export function Hero() {
       <ParticleField />
       <ScanLine />
 
-      {/* Floating cubes */}
-      {([
+      {/* Floating cubes — hidden on mobile */}
+      {!isMobile && ([
         { w:55, h:55, top:'8%',    left:'3%',    dur:'7s',   delay:'-1s'   },
         { w:38, h:38, top:'15%',   left:'35%',   dur:'9s',   delay:'-3s'   },
         { w:28, h:28, top:'12%',   right:'30%',  dur:'6.5s', delay:'-2s'   },
@@ -240,25 +404,35 @@ export function Hero() {
         }} />
       ))}
 
-      {/* Floating rings */}
-      <div data-d="0.3" style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
-        <FloatRing size={190} top="10%"  left="7%"  delay="0s"    speed="7s" />
-        <FloatRing size={130} top="70%"  left="13%" delay="-2.5s" speed="9s" />
-        <FloatRing size={230} top="18%"  left="70%" delay="-4s"   speed="8s" />
-        <FloatRing size={95}  top="80%"  left="80%" delay="-1.5s" speed="6s" />
-      </div>
+      {/* Floating rings — hidden on mobile */}
+      {!isMobile && (
+        <div data-d="0.3" style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+          <FloatRing size={190} top="10%"  left="7%"  delay="0s"    speed="7s" />
+          <FloatRing size={130} top="70%"  left="13%" delay="-2.5s" speed="9s" />
+          <FloatRing size={230} top="18%"  left="70%" delay="-4s"   speed="8s" />
+          <FloatRing size={95}  top="80%"  left="80%" delay="-1.5s" speed="6s" />
+        </div>
+      )}
 
-      {/* Shards BEHIND text z=2 */}
+      {/* Shards BEHIND text z=2 — fewer on mobile */}
       <div data-d="0.8" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 2 }}>
         <Shard size={54} style={{ top:'9%',  left:'2%'  }} glowColor="rgba(168,85,247,.55)" delay="0s"    duration="8s"  animName="shardA" />
         <Shard size={36} style={{ top:'73%', left:'4%'  }} glowColor="rgba(236,72,153,.5)"  delay="-3s"   duration="10s" animName="shardB" />
-        <Shard size={26} style={{ top:'33%', left:'43%' }} glowColor="rgba(96,165,250,.45)" delay="-5.5s" duration="7s"  animName="shardC" />
-        <Shard size={16} style={{ top:'56%', left:'39%' }} glowColor="rgba(168,85,247,.6)"  delay="-1s"   duration="9s"  animName="shardA" />
-        <Shard size={42} style={{ top:'20%', left:'55%' }} glowColor="rgba(232,121,249,.4)" delay="-7s"   duration="11s" animName="shardB" />
+        {!isMobile && <>
+          <Shard size={26} style={{ top:'33%', left:'43%' }} glowColor="rgba(96,165,250,.45)" delay="-5.5s" duration="7s"  animName="shardC" />
+          <Shard size={16} style={{ top:'56%', left:'39%' }} glowColor="rgba(168,85,247,.6)"  delay="-1s"   duration="9s"  animName="shardA" />
+          <Shard size={42} style={{ top:'20%', left:'55%' }} glowColor="rgba(232,121,249,.4)" delay="-7s"   duration="11s" animName="shardB" />
+        </>}
       </div>
 
       {/* ══ HERO TEXT z=5 ══ */}
-      <div style={{ position: 'relative', zIndex: 5, maxWidth: 580, paddingTop: 'var(--nav-h)', animation: 'fadeUp .9s ease both' }}>
+      <div style={{
+        position: 'relative', zIndex: 5,
+        maxWidth: isMobile ? '100%' : 580,
+        width: '100%',
+        paddingTop: 'var(--nav-h)',
+        animation: 'fadeUp .9s ease both',
+      }}>
         <div style={{
           display: 'inline-flex', alignItems: 'center', gap: 8,
           background: 'var(--glass)', border: '1px solid var(--glass-b)',
@@ -322,181 +496,183 @@ export function Hero() {
             </div>
           ))}
         </div>
+
+        {/* ── Mobile: stats strip + robot shown inline ── */}
+        {isMobile && (
+          <>
+            <MobileStatsStrip />
+            <MobileRobotSection />
+          </>
+        )}
       </div>
 
-      {/* ══ SHARDS IN FRONT z=9 ══ */}
-      <div data-d="1.3" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 9 }}>
-        <Shard size={60} style={{ top:'5%',  left:'51%' }} glowColor="rgba(168,85,247,.62)"  delay="-2s"   duration="9s"  animName="shardA" />
-        <Shard size={38} style={{ top:'43%', left:'47%' }} glowColor="rgba(236,72,153,.58)"  delay="-6.5s" duration="11s" animName="shardB" />
-        <Shard size={22} style={{ top:'22%', left:'61%' }} glowColor="rgba(96,165,250,.52)"  delay="-4s"   duration="8s"  animName="shardC" />
-        <Shard size={68} style={{ top:'63%', left:'54%' }} glowColor="rgba(168,85,247,.48)"  delay="-1.5s" duration="13s" animName="shardA" />
-        <Shard size={30} style={{ top:'14%', left:'76%' }} glowColor="rgba(232,121,249,.55)" delay="-7s"   duration="7s"  animName="shardB" />
-        <Shard size={46} style={{ top:'54%', left:'34%' }} glowColor="rgba(96,165,250,.42)"  delay="-3.5s" duration="10s" animName="shardC" />
-      </div>
-
-      {/* ══ ROBOT z=10 ══ */}
-      <FloatingRobot />
-
-      {/* ════════════════════════════════════════════════
-          FLOATING CARDS — tous positionnés en right/bottom
-          pour coller au robot qui est en bas-droite
-      ════════════════════════════════════════════════ */}
-
-      {/* ── Mockup browser — juste au-dessus du robot, légèrement à gauche ── */}
-      <div style={{
-        position: 'absolute',
-        bottom: '50%',   /* juste au-dessus de la tête du robot */
-        right: '1%',
-        width: 300, height: 185,
-        background: 'linear-gradient(150deg, rgba(22,10,52,.97), rgba(10,4,26,.99))',
-        border: '1px solid rgba(168,85,247,.28)',
-        borderRadius: 16,
-        boxShadow: '0 24px 60px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.05), inset 0 1px 0 rgba(255,255,255,.07), 0 0 40px rgba(168,85,247,.12)',
-        overflow: 'hidden',
-        zIndex: 8,
-        animation: 'mockFloat 7s ease-in-out infinite',
-      }}>
-        <div style={{ position:'absolute', inset:0, pointerEvents:'none', background:'radial-gradient(ellipse 55% 45% at 30% 20%,rgba(168,85,247,.18),transparent)' }}/>
-        {/* browser dots */}
-        <div style={{ display:'flex', alignItems:'center', gap:5, padding:'9px 12px 8px', borderBottom:'1px solid rgba(255,255,255,.06)' }}>
-          {['#ff5f57','#febc2e','#28c840'].map((c,i)=>(
-            <div key={i} style={{ width:7,height:7,borderRadius:'50%',background:c,opacity:.8 }}/>
-          ))}
-          <div style={{ flex:1,height:5,borderRadius:3,background:'rgba(255,255,255,.06)',marginLeft:6 }}/>
-        </div>
-        {/* content */}
-        <div style={{ padding:'10px 12px' }}>
-          <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:10 }}>
-            <div style={{ width:26,height:26,borderRadius:8,background:'linear-gradient(135deg,rgba(168,85,247,.5),rgba(236,72,153,.3))',border:'1px solid rgba(168,85,247,.3)',flexShrink:0 }}/>
-            <div>
-              <div style={{ width:68,height:5,borderRadius:3,background:'linear-gradient(90deg,rgba(168,85,247,.55),rgba(236,72,153,.25))',marginBottom:4 }}/>
-              <div style={{ width:44,height:4,borderRadius:2,background:'rgba(255,255,255,.08)' }}/>
-            </div>
-            <div style={{ marginLeft:'auto',display:'flex',gap:4 }}>
-              <div style={{ width:48,height:17,borderRadius:9,background:'rgba(168,85,247,.3)',border:'1px solid rgba(168,85,247,.2)' }}/>
-              <div style={{ width:34,height:17,borderRadius:9,background:'rgba(255,255,255,.06)',border:'1px solid rgba(255,255,255,.07)' }}/>
-            </div>
+      {/* ══ DESKTOP ONLY: Shards in front, robot, floating cards ══ */}
+      {!isMobile && (
+        <>
+          {/* Shards IN FRONT z=9 */}
+          <div data-d="1.3" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 9 }}>
+            <Shard size={60} style={{ top:'5%',  left:'51%' }} glowColor="rgba(168,85,247,.62)"  delay="-2s"   duration="9s"  animName="shardA" />
+            <Shard size={38} style={{ top:'43%', left:'47%' }} glowColor="rgba(236,72,153,.58)"  delay="-6.5s" duration="11s" animName="shardB" />
+            <Shard size={22} style={{ top:'22%', left:'61%' }} glowColor="rgba(96,165,250,.52)"  delay="-4s"   duration="8s"  animName="shardC" />
+            <Shard size={68} style={{ top:'63%', left:'54%' }} glowColor="rgba(168,85,247,.48)"  delay="-1.5s" duration="13s" animName="shardA" />
+            <Shard size={30} style={{ top:'14%', left:'76%' }} glowColor="rgba(232,121,249,.55)" delay="-7s"   duration="7s"  animName="shardB" />
+            <Shard size={46} style={{ top:'54%', left:'34%' }} glowColor="rgba(96,165,250,.42)"  delay="-3.5s" duration="10s" animName="shardC" />
           </div>
-          <div style={{ display:'flex', gap:6 }}>
-            {[
-              { label:'FOCUS',  val:'94%', bg:'rgba(168,85,247,.22)' },
-              { label:'TASKS',  val:'12',  bg:'rgba(96,165,250,.15)'  },
-              { label:'STREAK', val:'7d',  bg:'rgba(236,72,153,.15)'  },
-            ].map(s=>(
-              <div key={s.label} style={{ flex:1,borderRadius:9,background:s.bg,border:'1px solid rgba(255,255,255,.07)',padding:'7px 8px' }}>
-                <div style={{ fontSize:'.4rem',color:'rgba(255,255,255,.45)',fontFamily:'var(--font-display)',letterSpacing:'.1em',textTransform:'uppercase',marginBottom:2 }}>{s.label}</div>
-                <div style={{ fontSize:'.85rem',fontWeight:800,fontFamily:'var(--font-display)',color:'#fff' }}>{s.val}</div>
+
+          {/* Robot */}
+          <FloatingRobot />
+
+          {/* Mockup browser card */}
+          <div style={{
+            position: 'absolute',
+            bottom: '50%',
+            right: '1%',
+            width: 300, height: 185,
+            background: 'linear-gradient(150deg, rgba(22,10,52,.97), rgba(10,4,26,.99))',
+            border: '1px solid rgba(168,85,247,.28)',
+            borderRadius: 16,
+            boxShadow: '0 24px 60px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.05), inset 0 1px 0 rgba(255,255,255,.07), 0 0 40px rgba(168,85,247,.12)',
+            overflow: 'hidden',
+            zIndex: 8,
+            animation: 'mockFloat 7s ease-in-out infinite',
+          }}>
+            <div style={{ position:'absolute', inset:0, pointerEvents:'none', background:'radial-gradient(ellipse 55% 45% at 30% 20%,rgba(168,85,247,.18),transparent)' }}/>
+            <div style={{ display:'flex', alignItems:'center', gap:5, padding:'9px 12px 8px', borderBottom:'1px solid rgba(255,255,255,.06)' }}>
+              {['#ff5f57','#febc2e','#28c840'].map((c,i)=>(
+                <div key={i} style={{ width:7,height:7,borderRadius:'50%',background:c,opacity:.8 }}/>
+              ))}
+              <div style={{ flex:1,height:5,borderRadius:3,background:'rgba(255,255,255,.06)',marginLeft:6 }}/>
+            </div>
+            <div style={{ padding:'10px 12px' }}>
+              <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:10 }}>
+                <div style={{ width:26,height:26,borderRadius:8,background:'linear-gradient(135deg,rgba(168,85,247,.5),rgba(236,72,153,.3))',border:'1px solid rgba(168,85,247,.3)',flexShrink:0 }}/>
+                <div>
+                  <div style={{ width:68,height:5,borderRadius:3,background:'linear-gradient(90deg,rgba(168,85,247,.55),rgba(236,72,153,.25))',marginBottom:4 }}/>
+                  <div style={{ width:44,height:4,borderRadius:2,background:'rgba(255,255,255,.08)' }}/>
+                </div>
+                <div style={{ marginLeft:'auto',display:'flex',gap:4 }}>
+                  <div style={{ width:48,height:17,borderRadius:9,background:'rgba(168,85,247,.3)',border:'1px solid rgba(168,85,247,.2)' }}/>
+                  <div style={{ width:34,height:17,borderRadius:9,background:'rgba(255,255,255,.06)',border:'1px solid rgba(255,255,255,.07)' }}/>
+                </div>
               </div>
-            ))}
+              <div style={{ display:'flex', gap:6 }}>
+                {[
+                  { label:'FOCUS',  val:'94%', bg:'rgba(168,85,247,.22)' },
+                  { label:'TASKS',  val:'12',  bg:'rgba(96,165,250,.15)'  },
+                  { label:'STREAK', val:'7d',  bg:'rgba(236,72,153,.15)'  },
+                ].map(s=>(
+                  <div key={s.label} style={{ flex:1,borderRadius:9,background:s.bg,border:'1px solid rgba(255,255,255,.07)',padding:'7px 8px' }}>
+                    <div style={{ fontSize:'.4rem',color:'rgba(255,255,255,.45)',fontFamily:'var(--font-display)',letterSpacing:'.1em',textTransform:'uppercase',marginBottom:2 }}>{s.label}</div>
+                    <div style={{ fontSize:'.85rem',fontWeight:800,fontFamily:'var(--font-display)',color:'#fff' }}>{s.val}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div style={{ position:'absolute',top:0,left:'15%',right:'15%',height:1,background:'linear-gradient(90deg,transparent,rgba(168,85,247,.55),transparent)',pointerEvents:'none' }}/>
           </div>
-        </div>
-        <div style={{ position:'absolute',top:0,left:'15%',right:'15%',height:1,background:'linear-gradient(90deg,transparent,rgba(168,85,247,.55),transparent)',pointerEvents:'none' }}/>
-      </div>
 
-      {/* ── FOCUS SCORE — coin haut-droit, collé à la bordure ── */}
-      <div style={{
-        position: 'absolute',
-        top: '30%',
-        right: '30%',
-        background: 'rgba(10,3,28,.9)',
-        border: '1px solid rgba(168,85,247,.3)',
-        borderRadius: 14, padding: '11px 15px',
-        backdropFilter: 'blur(18px)',
-        boxShadow: '0 8px 32px rgba(0,0,0,.5), 0 0 22px rgba(168,85,247,.14)',
-        zIndex: 11, minWidth: 126,
-        animation: 'fc1 5s ease-in-out infinite',
-      }}>
-        <div style={{ position:'absolute',top:0,left:'15%',right:'15%',height:1,background:'linear-gradient(90deg,transparent,rgba(168,85,247,.6),transparent)' }}/>
-        <div style={{ fontSize:'.5rem',fontFamily:'var(--font-display)',letterSpacing:'.12em',textTransform:'uppercase',color:'rgba(255,255,255,.38)',marginBottom:3 }}>Focus Score</div>
-        <div style={{ fontFamily:'var(--font-display)',fontSize:'1.45rem',fontWeight:800,lineHeight:1,marginBottom:6,
-          background:'linear-gradient(135deg,var(--purple-l),#e879f9)',
-          WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text',
-        }}>94%</div>
-        <div style={{ display:'flex',gap:2,alignItems:'flex-end',height:16 }}>
-          {[65,80,55,90,70,85,94].map((h,i)=>(
-            <div key={i} style={{ width:3.5,borderRadius:2,height:h*.17,background:`rgba(168,85,247,${.3+h*.007})`,boxShadow:h>80?'0 0 4px rgba(168,85,247,.6)':'none' }}/>
-          ))}
-        </div>
-      </div>
+          {/* Focus Score card */}
+          <div style={{
+            position: 'absolute',
+            top: '30%', right: '30%',
+            background: 'rgba(10,3,28,.9)',
+            border: '1px solid rgba(168,85,247,.3)',
+            borderRadius: 14, padding: '11px 15px',
+            backdropFilter: 'blur(18px)',
+            boxShadow: '0 8px 32px rgba(0,0,0,.5), 0 0 22px rgba(168,85,247,.14)',
+            zIndex: 11, minWidth: 126,
+            animation: 'fc1 5s ease-in-out infinite',
+          }}>
+            <div style={{ position:'absolute',top:0,left:'15%',right:'15%',height:1,background:'linear-gradient(90deg,transparent,rgba(168,85,247,.6),transparent)' }}/>
+            <div style={{ fontSize:'.5rem',fontFamily:'var(--font-display)',letterSpacing:'.12em',textTransform:'uppercase',color:'rgba(255,255,255,.38)',marginBottom:3 }}>Focus Score</div>
+            <div style={{ fontFamily:'var(--font-display)',fontSize:'1.45rem',fontWeight:800,lineHeight:1,marginBottom:6,
+              background:'linear-gradient(135deg,var(--purple-l),#e879f9)',
+              WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text',
+            }}>94%</div>
+            <div style={{ display:'flex',gap:2,alignItems:'flex-end',height:16 }}>
+              {[65,80,55,90,70,85,94].map((h,i)=>(
+                <div key={i} style={{ width:3.5,borderRadius:2,height:h*.17,background:`rgba(168,85,247,${.3+h*.007})`,boxShadow:h>80?'0 0 4px rgba(168,85,247,.6)':'none' }}/>
+              ))}
+            </div>
+          </div>
 
-      {/* ── ⏱ 25:00 — au-dessus et à gauche du robot ── */}
-      <div style={{
-        position: 'absolute',
-        bottom: '30%',   /* au-dessus de la tête */
-        right: '1%',    /* à gauche du robot */
-        background: 'rgba(10,3,28,.9)',
-        border: '1px solid rgba(168,85,247,.32)',
-        borderRadius: 30, padding: '7px 15px',
-        backdropFilter: 'blur(14px)',
-        boxShadow: '0 4px 20px rgba(0,0,0,.45), 0 0 14px rgba(168,85,247,.18)',
-        zIndex: 11,
-        display: 'flex', alignItems: 'center', gap: 7,
-        animation: 'fc2 6s ease-in-out infinite',
-      }}>
-        <span style={{ fontSize:'.8rem' }}>⏱</span>
-        <span style={{ fontFamily:'var(--font-display)',fontSize:'.78rem',fontWeight:700,color:'#fff',letterSpacing:'.04em' }}>25:00</span>
-      </div>
+          {/* Timer pill */}
+          <div style={{
+            position: 'absolute',
+            bottom: '30%', right: '1%',
+            background: 'rgba(10,3,28,.9)',
+            border: '1px solid rgba(168,85,247,.32)',
+            borderRadius: 30, padding: '7px 15px',
+            backdropFilter: 'blur(14px)',
+            boxShadow: '0 4px 20px rgba(0,0,0,.45), 0 0 14px rgba(168,85,247,.18)',
+            zIndex: 11,
+            display: 'flex', alignItems: 'center', gap: 7,
+            animation: 'fc2 6s ease-in-out infinite',
+          }}>
+            <span style={{ fontSize:'.8rem' }}>⏱</span>
+            <span style={{ fontFamily:'var(--font-display)',fontSize:'.78rem',fontWeight:700,color:'#fff',letterSpacing:'.04em' }}>25:00</span>
+          </div>
 
-      {/* ── ⊘ Blocked — à gauche du robot, niveau milieu ── */}
-      <div style={{
-        position: 'absolute',
-        bottom: '40%',   /* niveau milieu du robot */
-        right: '30%',    /* bien à gauche du robot */
-        background: 'rgba(10,3,28,.9)',
-        border: '1px solid rgba(236,72,153,.3)',
-        borderRadius: 30, padding: '7px 15px',
-        backdropFilter: 'blur(14px)',
-        boxShadow: '0 4px 20px rgba(0,0,0,.45), 0 0 12px rgba(236,72,153,.14)',
-        zIndex: 11,
-        display: 'flex', alignItems: 'center', gap: 7,
-        animation: 'fc3 7s ease-in-out infinite',
-      }}>
-        <span style={{ fontSize:'.72rem',color:'rgba(236,72,153,.9)' }}>⊘</span>
-        <span style={{ fontFamily:'var(--font-display)',fontSize:'.72rem',fontWeight:700,color:'rgba(255,255,255,.8)',letterSpacing:'.04em' }}>Blocked</span>
-      </div>
+          {/* Blocked pill */}
+          <div style={{
+            position: 'absolute',
+            bottom: '40%', right: '30%',
+            background: 'rgba(10,3,28,.9)',
+            border: '1px solid rgba(236,72,153,.3)',
+            borderRadius: 30, padding: '7px 15px',
+            backdropFilter: 'blur(14px)',
+            boxShadow: '0 4px 20px rgba(0,0,0,.45), 0 0 12px rgba(236,72,153,.14)',
+            zIndex: 11,
+            display: 'flex', alignItems: 'center', gap: 7,
+            animation: 'fc3 7s ease-in-out infinite',
+          }}>
+            <span style={{ fontSize:'.72rem',color:'rgba(236,72,153,.9)' }}>⊘</span>
+            <span style={{ fontFamily:'var(--font-display)',fontSize:'.72rem',fontWeight:700,color:'rgba(255,255,255,.8)',letterSpacing:'.04em' }}>Blocked</span>
+          </div>
 
-      {/* ── ✓ Completed 12 Tasks — bas-gauche du robot ── */}
-      <div style={{
-        position: 'absolute',
-        bottom: '22%',   /* bas du robot */
-        right: '30%',    /* à gauche du robot */
-        background: 'rgba(10,3,28,.92)',
-        border: '1px solid rgba(34,197,94,.25)',
-        borderRadius: 14, padding: '9px 13px',
-        backdropFilter: 'blur(18px)',
-        boxShadow: '0 8px 32px rgba(0,0,0,.5), 0 0 18px rgba(34,197,94,.1)',
-        zIndex: 11,
-        display: 'flex', alignItems: 'center', gap: 9,
-        animation: 'fc4 5.5s ease-in-out infinite',
-      }}>
-        <div style={{
-          width:26,height:26,borderRadius:8,
-          background:'rgba(34,197,94,.2)',border:'1px solid rgba(34,197,94,.38)',
-          display:'flex',alignItems:'center',justifyContent:'center',
-          fontSize:'.7rem',color:'#4ade80',flexShrink:0,
-        }}>✓</div>
-        <div>
-          <div style={{ fontSize:'.48rem',fontFamily:'var(--font-display)',letterSpacing:'.1em',textTransform:'uppercase',color:'rgba(255,255,255,.35)',marginBottom:2 }}>Completed</div>
-          <div style={{ fontFamily:'var(--font-display)',fontSize:'.82rem',fontWeight:800,color:'#fff' }}>12 Tasks</div>
-        </div>
-      </div>
+          {/* Completed card */}
+          <div style={{
+            position: 'absolute',
+            bottom: '22%', right: '30%',
+            background: 'rgba(10,3,28,.92)',
+            border: '1px solid rgba(34,197,94,.25)',
+            borderRadius: 14, padding: '9px 13px',
+            backdropFilter: 'blur(18px)',
+            boxShadow: '0 8px 32px rgba(0,0,0,.5), 0 0 18px rgba(34,197,94,.1)',
+            zIndex: 11,
+            display: 'flex', alignItems: 'center', gap: 9,
+            animation: 'fc4 5.5s ease-in-out infinite',
+          }}>
+            <div style={{
+              width:26,height:26,borderRadius:8,
+              background:'rgba(34,197,94,.2)',border:'1px solid rgba(34,197,94,.38)',
+              display:'flex',alignItems:'center',justifyContent:'center',
+              fontSize:'.7rem',color:'#4ade80',flexShrink:0,
+            }}>✓</div>
+            <div>
+              <div style={{ fontSize:'.48rem',fontFamily:'var(--font-display)',letterSpacing:'.1em',textTransform:'uppercase',color:'rgba(255,255,255,.35)',marginBottom:2 }}>Completed</div>
+              <div style={{ fontFamily:'var(--font-display)',fontSize:'.82rem',fontWeight:800,color:'#fff' }}>12 Tasks</div>
+            </div>
+          </div>
 
-      {/* Floor disc glow */}
-      <div style={{
-        position: 'absolute', width: 700, height: 120,
-        right: '4%', bottom: '28%',
-        background: 'radial-gradient(ellipse, rgba(180,80,255,.45) 0%, rgba(120,40,200,.2) 40%, transparent 70%)',
-        borderRadius: '50%', filter: 'blur(20px)',
-        zIndex: 1, pointerEvents: 'none', transform: 'translateX(10%)',
-      }} />
+          {/* Floor disc glow */}
+          <div style={{
+            position: 'absolute', width: 700, height: 120,
+            right: '4%', bottom: '28%',
+            background: 'radial-gradient(ellipse, rgba(180,80,255,.45) 0%, rgba(120,40,200,.2) 40%, transparent 70%)',
+            borderRadius: '50%', filter: 'blur(20px)',
+            zIndex: 1, pointerEvents: 'none', transform: 'translateX(10%)',
+          }} />
 
-      {/* Horizon glow line */}
-      <div style={{
-        position: 'absolute', bottom: '21%', left: 0, right: 0, height: 1,
-        background: 'linear-gradient(90deg,transparent 4%,rgba(168,85,247,.28) 28%,rgba(236,72,153,.18) 62%,transparent 92%)',
-        animation: 'horizonGlow 5s ease-in-out infinite',
-        pointerEvents: 'none', zIndex: 1,
-      }} />
+          {/* Horizon glow line */}
+          <div style={{
+            position: 'absolute', bottom: '21%', left: 0, right: 0, height: 1,
+            background: 'linear-gradient(90deg,transparent 4%,rgba(168,85,247,.28) 28%,rgba(236,72,153,.18) 62%,transparent 92%)',
+            animation: 'horizonGlow 5s ease-in-out infinite',
+            pointerEvents: 'none', zIndex: 1,
+          }} />
+        </>
+      )}
     </section>
   );
 }

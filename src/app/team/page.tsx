@@ -33,7 +33,7 @@ const TEAM = [
     role: 'Full Stack Developer',
     tags: ['Backend', 'UI/UX Design', 'Software Engineering'],
     bio: 'Software engineering student with a sharp eye for both systems and design. Bridges the gap between powerful backend logic and beautiful, intuitive interfaces.',
-    image: null,
+    image: '/assets/team/oss.png',
     linkedin: 'https://www.linkedin.com/in/ossama-lekhdar',
     color: '#14b8a6',
     colorDark: '#0d9488',

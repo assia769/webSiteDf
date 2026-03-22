@@ -10,15 +10,6 @@ const COLS = [
     ],
   },
   {
-    title: 'Tools',
-    links: [
-      { href: '/pomodoro', label: 'Pomodoro' },
-      { href: '/todo',     label: 'ToDo List' },
-      { href: '/blocker',  label: 'Blocker' },
-      { href: '/sound',    label: 'Sounds' },
-    ],
-  },
-  {
     title: 'Company',
     links: [
       { href: '/team',    label: 'Team' },

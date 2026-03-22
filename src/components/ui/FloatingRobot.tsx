@@ -3,11 +3,17 @@
 import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 
-export function FloatingRobot() {
+interface FloatingRobotProps {
+  /** When true, renders in normal flow (mobile). When false (default), renders absolutely positioned. */
+  inline?: boolean;
+}
+
+export function FloatingRobot({ inline = false }: FloatingRobotProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
 
-  // Subtle parallax on mouse move
+  // Subtle parallax on mouse move — desktop only
   useEffect(() => {
+    if (inline) return;
     const onMove = (e: MouseEvent) => {
       if (!wrapRef.current) return;
       const { innerWidth, innerHeight } = window;
@@ -18,22 +24,30 @@ export function FloatingRobot() {
     };
     window.addEventListener('mousemove', onMove);
     return () => window.removeEventListener('mousemove', onMove);
-  }, []);
+  }, [inline]);
+
+  const desktopStyle: React.CSSProperties = {
+    position: 'absolute',
+    right: '4%',
+    top: '50%',
+    width: 'min(480px, 44vw)',
+    zIndex: 4,
+    animation: 'robotLevitate 5s ease-in-out infinite',
+    transition: 'transform .1s linear',
+    willChange: 'transform',
+  };
+
+  const mobileStyle: React.CSSProperties = {
+    position: 'relative',
+    width: '100%',
+    maxWidth: 300,
+    margin: '0 auto',
+    zIndex: 4,
+    animation: 'robotLevitate 5s ease-in-out infinite',
+  };
 
   return (
-    <div
-      ref={wrapRef}
-      style={{
-        position: 'absolute',
-        right: '4%',
-        top: '50%',
-        width: 'min(480px, 44vw)',
-        zIndex: 4,
-        animation: 'robotLevitate 5s ease-in-out infinite',
-        transition: 'transform .1s linear',
-        willChange: 'transform',
-      }}
-    >
+    <div ref={wrapRef} style={inline ? mobileStyle : desktopStyle}>
       {/* Sparkles */}
       {SPARKLES.map((sp, i) => (
         <div
@@ -94,6 +108,25 @@ export function FloatingRobot() {
           zIndex: 2,
         }}
       />
+
+      <style>{`
+        @keyframes robotLevitate {
+          0%,100% { transform:translateY(0px); }
+          50%     { transform:translateY(-18px); }
+        }
+        @keyframes sparkle {
+          0%,100% { transform:scale(1) rotate(0deg); opacity:.8; }
+          50%      { transform:scale(1.4) rotate(15deg); opacity:1; }
+        }
+        @keyframes orbitalSpin {
+          from { transform:rotateX(65deg) rotateZ(0deg); }
+          to   { transform:rotateX(65deg) rotateZ(360deg); }
+        }
+        @keyframes floorPulse {
+          0%,100% { opacity:.6; transform:translateX(-50%) scaleX(1); }
+          50%     { opacity:1; transform:translateX(-50%) scaleX(1.15); }
+        }
+      `}</style>
     </div>
   );
 }
