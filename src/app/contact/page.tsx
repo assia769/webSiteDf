@@ -11,33 +11,35 @@ export default function ContactPage() {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setStatus('sending');
+ const handleSubmit = async (e: FormEvent) => {
+  e.preventDefault();
+  setStatus('sending');
 
-    try {
-      const emailjs = await import('@emailjs/browser');
-      await emailjs.default.send(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
-        {
-          from_name:  form.name,
-          from_email: form.email,
-          subject:    form.subject,
-          message:    form.message,
-          // This matches {{to_email}} in your EmailJS template if needed
-          to_email:   'dfcraft2026@protonmail.com',
-        },
-        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
-      );
-      setStatus('sent');
-      setForm({ name: '', email: '', subject: '', message: '' });
-    } catch (err) {
-      console.error('EmailJS error:', err);
-      setStatus('error');
-    }
-  };
-
+  try {
+    const emailjs = await import('@emailjs/browser');
+    
+    // ✅ Initialise d'abord avec la clé publique
+    emailjs.default.init(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!);
+    
+    await emailjs.default.send(
+      process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+      process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+      {
+        from_name:  form.name,
+        from_email: form.email,
+        subject:    form.subject,
+        message:    form.message,
+        to_email:   'dfcraft2026@protonmail.com',
+      }
+      // ❌ Supprime le 4ème argument (la clé), elle est déjà dans init()
+    );
+    setStatus('sent');
+    setForm({ name: '', email: '', subject: '', message: '' });
+  } catch (err) {
+    console.error('EmailJS error:', err);
+    setStatus('error');
+  }
+};
   const inputStyle: React.CSSProperties = {
     width: '100%',
     background: 'rgba(168,85,247,.05)',
